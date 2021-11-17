@@ -2,8 +2,6 @@ from django.db import models
 from django.contrib.auth.models import User
 
 
-# Create your models here.
-
 class Author(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     rating = models.IntegerField(default=0)
@@ -12,9 +10,15 @@ class Author(models.Model):
         self.rating = new_rating
         self.save()
 
+    def __str__(self):
+        return f"{self.user}"
+
 
 class Category(models.Model):
     name = models.CharField(max_length=32, unique=True)
+
+    def __str__(self):
+        return f"{self.name}"
 
 
 class Post(models.Model):
@@ -45,6 +49,9 @@ class Post(models.Model):
     def preview(self):
         size = 124 if len(self.text) > 124 else len(self.text)
         return self.text[:size] + '...'
+
+    def __str__(self):
+        return f"{self.title}: {self.text[:20]}"
 
 
 class PostCategory(models.Model):
